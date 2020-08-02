@@ -36,7 +36,7 @@ namespace SendSMSReminder
             var from = new EmailAddress(GetEnvironmentVariable("EMAIL_ADD"), "Holistic Fitness");
             var subject = "Appoinment Reminder for Holistic Fitness";
 
-            var date = DateTime.Now.ToString("M/dd/yyyy", CultureInfo.InvariantCulture);
+            var date = DateTime.Now.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
             
             var options = new FeedOptions { EnableCrossPartitionQuery = true }; // Enable cross partition query
             IDocumentQuery<AppointmentEntity> query = dbclient.CreateDocumentQuery<AppointmentEntity>(driverCollectionUri, options)
@@ -53,14 +53,14 @@ namespace SendSMSReminder
                     try
                     {
                         // Send an SMS message.
-                        var bodymessage = "Reminder! You have an appointment today with "+ app.modifiedBy + " at "+ app.from + ". Thank you, Holistic Fitness";
+                        var bodymessage = "Reminder! You have an appointment today with " + app.modifiedBy + " at " + app.from + ". Thank you, Holistic Fitness";
                         var message = MessageResource.Create(
-                            to: new PhoneNumber("+91"+app.phone),
+                            to: new PhoneNumber("+91" + app.phone),
                             from: new PhoneNumber(GetEnvironmentVariable("TWILIO_PHONE_NUMBER")),
                             body: bodymessage);
 
                         // Send an email
-                        
+
                         var to = new EmailAddress(app.email, "Client");
                         var plainTextContent = "You have an appointment today with " + app.modifiedBy + " at " + app.from + ". Thank you, Holistic Fitness";
                         var htmlContent = "<strong>HOLISTIC FITNESS by Mrinmoyee Sinha</strong>";
